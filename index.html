@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOPI — Acompañamiento Emocional</title>
+    <meta name="description" content="HOPI — Robot inteligente de acompañamiento emocional. Bienestar mental para toda la familia.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ESTILOS GENERALES (tomados del machote Motores) */
+        :root {
+            --color-primary: #2c3e50;
+            --color-secondary: #e74c3c;
+            --color-accent: #f39c12;
+            --color-light: #ecf0f1;
+            --color-dark: #2c3e50;
+            --spacing: 1rem;
+            --border-radius: 4px;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --radius: 8px;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height:1.6; color:#333; background-color:#f5f5f5; }
+        .container { width:100%; max-width:1200px; margin:0 auto; padding:0 var(--spacing); }
+        img { max-width:100%; height:auto; }
+        .btn { display:inline-block; background-color:var(--color-secondary); color:white; padding:0.8rem 1.5rem; border:none; border-radius:var(--border-radius); cursor:pointer; text-decoration:none; font-weight:bold; transition:var(--transition); }
+        .btn:hover { background-color:#c0392b; transform: translateY(-3px); }
+        .section-title { text-align:center; margin-bottom:2rem; color:var(--color-primary); position:relative; padding-bottom:0.5rem; }
+        .section-title::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:80px; height:3px; background-color:var(--color-secondary); }
+        .section-padding { padding:4rem 0; }
+
+        /* HEADER */
+        header { background-color:var(--color-primary); color:white; padding:1rem 0; position:sticky; top:0; z-index:100; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
+        .header-container { display:flex; justify-content:space-between; align-items:center; }
+        .logo { font-size:1.8rem; font-weight:bold; display:flex; align-items:center; }
+        .logo i { color:var(--color-secondary); margin-right:0.5rem; }
+        .nav-menu { display:flex; list-style:none; }
+        .nav-menu li { margin-left:1.5rem; }
+        .nav-menu a { color:white; text-decoration:none; transition:var(--transition); font-weight:500; }
+        .nav-menu a:hover { color:var(--color-secondary); }
+        .hamburger { display:none; cursor:pointer; font-size:1.5rem; }
+
+        /* HERO SECTION */
+        .hero { background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,250,250,0.9)); border-radius:var(--radius); padding:28px; display:grid; grid-template-columns:1fr 380px; gap:22px; box-shadow:var(--shadow); align-items:center; margin-bottom:20px; }
+        .hero h1 { font-size:2.8rem; margin-bottom:1rem; color:var(--color-primary); }
+        .hero p { font-size:1.2rem; margin-bottom:2rem; }
+        aside.device { display:flex; flex-direction:column; align-items:center; }
+        .mock { background-color:#ddd; width:100%; height:300px; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-bottom:1rem; }
+
+        /* FEATURES */
+        .features { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+        .features .card { background-color:white; padding:1rem; border-radius:var(--border-radius); box-shadow:var(--shadow); }
+        .features .muted { color:#555; font-size:0.95rem; }
+
+        /* MOOD & SLEEP */
+        .panel { display:flex; gap:14px; margin-bottom:22px; }
+        .panel .card { background-color:white; padding:1rem; border-radius:var(--border-radius); box-shadow:var(--shadow); flex:1; }
+        .chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+        .chip { padding:0.4rem 0.8rem; background-color:var(--color-light); border-radius:var(--border-radius); cursor:pointer; transition:var(--transition); }
+        .chip.active { background-color:var(--color-secondary); color:white; }
+
+        .bar { background-color:var(--color-light); border-radius:var(--border-radius); height:24px; position:relative; }
+        .bar i { display:block; background-color:var(--color-secondary); height:100%; width:0%; border-radius:var(--border-radius); }
+
+        /* CTA / ACCESORIOS */
+        #cta-section { display:grid; gap:12px; margin-bottom:22px; }
+        #cta-section .card { background-color:white; padding:1rem; border-radius:var(--border-radius); box-shadow:var(--shadow); }
+
+
+
+        /* TESTIMONIOS */
+        .testimonials { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:22px; }
+        .testimonial { background-color:white; padding:1rem; border-radius:var(--border-radius); box-shadow:var(--shadow); text-align:center; }
+
+        /* FOOTER */
+        footer { background-color:var(--color-dark); color:white; padding:2rem 0; text-align:center; }
+        footer a { color:var(--color-secondary); text-decoration:none; }
+        footer a:hover { text-decoration:underline; }
+
+        /* RESPONSIVE */
+        @media(max-width:992px){ .hero{grid-template-columns:1fr} .features{grid-template-columns:1fr} .panel{flex-direction:column} }
+        @media(max-width:768px){ .hamburger{display:block} .nav-menu{position:fixed;top:70px;right:-100%;background-color:var(--color-primary);width:80%;height:calc(100vh-70px);flex-direction:column;align-items:center;padding-top:2rem;transition:var(--transition);} .nav-menu.active{right:0} .nav-menu li{margin:1.5rem 0} }
+        @media(max-width:576px){ .hero{padding:20px} }
+
+
+    /* Sección de logos */
+    #logos-section {
+    background-color: #b57edc; /* Cambia este color al que quieras */
+    padding: 5rem 0;           /* Ajusta el padding si quieres */
+    text-align: center;
+}
+
+
+.btn-help {
+    background-color: #3498db; /* azul, por ejemplo */
+    color: white; /* texto en blanco */
+}
+
+.btn-help:hover {
+    background-color: #2980b9; /* azul más oscuro al pasar el mouse */
+}
+
+.hero-text {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #f5f5f5; /* o el color que quieras */
+}
+
+.hero-image .mock {
+    background: none;        /* quitar fondo gris */
+    box-shadow: none;        /* quitar sombra */
+    height: auto;            /* altura automática según la imagen */
+    display: block;          /* no usar flex para evitar centrado forzado */
+    text-align: center;      /* centrar imagen */
+}
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+
+/* Responsive */
+@media(min-width: 992px){
+    .hero-text { padding: 3rem 2rem; }
+    .hero-image { padding: 3rem 2rem; }
+}
+
+@media(max-width: 768px){
+    .hero-text, .hero-image { padding: 2rem 1rem; }
+}
+
+
+    </style>
+</head>
+<body>
+<!-- HEADER -->
+<header>
+    <div class="container header-container">
+        <div class="logo" style="display:flex; align-items:center; gap:8px;">
+            <span>HOPI</span>
+            <img src="assets/logo.png" alt="Logo HOPI" style="height:30px;">
+        </div>
+
+        <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="#hero-section">Quienes Somos</a></li>
+            <li><a href="#features">Necesito Apoyo</a></li>
+            <li><a href="#testimonios">Testimonios</a></li>
+            <li><a href="#cta-section" class="cta">Contáctanos</a></li>
+        </ul>
+    </div>
+</header>
+
+<!-- LOGOS -->
+<section id="logos-section" class="section-padding">
+    <div class="container">
+        <h2 class="section-title">HOPI - Apoyo Emocional</h2>
+        <div style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; align-items:center;">
+            <div style="flex:1; text-align:center;">
+                <img src="assets/logo.png" alt="Logo HOPI" style="max-width:200px;">
+            </div>
+            <div style="flex:1; text-align:center;">
+                <img src="assets/logo2.png" alt="Logo secundario HOPI" style="max-width:200px;">
+
+                <!-- Botón debajo del logo2 -->
+                <div style="margin-top:20px;">
+                    <a class="btn" id="ctaComprar" href="#cta-section">Comprar aquí</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Botón flotante de WhatsApp -->
+<a href="https://wa.me/524461211297"
+   class="whatsapp-btn"
+   target="_blank">
+    <i class="fab fa-whatsapp"></i> Contactanos
+</a>
+
+<style>
+.whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.whatsapp-btn:hover {
+    background-color: #1ebe57;
+    transform: scale(1.05);
+}
+</style>
+
+<!-- HERO TEXT -->
+<section class="hero-text" id="hero-section">
+    <div class="container">
+        <h1>¿Por qué HOPI?</h1>
+        <p><strong>HOPI</strong> - Es un acompañante para toda la familia, desde pequeños hasta personas de la tercera edad, con funciones de apoyo emocional y compañía.</p>
+        <a class="btn btn-help" href="#cta-section2">Necesito Ayuda</a>
+    </div>
+</section>
+
+<style>
+.hero-text {
+    position: relative;
+    background: url('assets/fondo_hopi.png') repeat; /* imagen se repite */
+    background-size: auto; /* tamaño original, se repite */
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    padding: 4rem 1rem;
+}
+
+/* Overlay para que el texto sea legible */
+.hero-text::before {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color: rgba(0,0,0,0.5); /* ligero overlay */
+    z-index: 0;
+}
+
+.hero-text > .container {
+    position: relative; /* contenido encima del overlay */
+    z-index: 1;
+    text-align: center;
+}
+
+/* Botón de ayuda */
+.btn-help {
+    background-color: #3498db;
+    color: white;
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-help:hover {
+    background-color: #2980b9;
+}
+</style>
+
+
+<!-- HERO IMAGE -->
+<section class="hero-image">
+    <div class="container">
+        <aside class="device" aria-label="Dispositivo HOPI">
+            <div class="mock">
+                <img src="assets/foto1.png" alt="Imagen del producto HOPI" style="max-width:100%; border-radius:8px;">
+            </div>
+        </aside>
+    </div>
+</section>
+
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="card">
+            <h3>Registro emocional</h3>
+            <div class="muted">El usuario puede registrar su estado de ánimo diario (triste, enojado, neutral, bien, feliz) para llevar un seguimiento.</div>
+        </div>
+        <div class="card">
+            <h3>Tests y ejercicios</h3>
+            <div class="muted">Tests de gratitud, autoestima y actividades con historias para fomentar hábitos saludables.</div>
+        </div>
+        <div class="card">
+            <h3>Cuidado del sueño</h3>
+            <div class="muted">Monitoreo de horas de sueño, siestas y recomendaciones personalizadas para mejorar el descanso.</div>
+        </div>
+    </section>
+
+    <!-- MOOD -->
+    <section class="panel" id="mood-section">
+        <div class="card">
+            <h3>¿Cómo te sientes?</h3>
+            <div class="chips" id="moodChips">
+                <div class="chip" data-mood="triste">Triste</div>
+                <div class="chip" data-mood="enojado">Enojado</div>
+                <div class="chip" data-mood="neutral">Neutral</div>
+                <div class="chip" data-mood="bien">Bien</div>
+                <div class="chip" data-mood="feliz">Feliz</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLEEP -->
+    <section class="panel" id="sleep-section">
+        <div class="card">
+            <h3>Controla tu ciclo de sueño</h3>
+            <div class="bar"><i style="width:66.7%"></i></div>
+        </div>
+    </section>
+
+    <!-- CTA / ACCESORIOS -->
+    <section id="cta-section">
+        <div class="card"><h3>Accesorios</h3></div>
+        <div class="card"><h3>Trabaja con nosotros</h3></div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section id="testimonios">
+        <h2 class="section-title">Reseñas de clientes</h2>
+        <div class="testimonials">
+            <div class="testimonial"><strong>Malena Elvina</strong></div>
+            <div class="testimonial"><strong>Nicolás Bentley</strong></div>
+            <div class="testimonial"><strong>Alyanna Silvestre</strong></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>© <strong>HOPI</strong> — Robot de acompañamiento emocional</div>
+        <div>Universidad Marista de Queretaro , Querétaro • <a href="mailto:HOPI_MX@OUTLOOK.COM ">HOPI_MX@OUTLOOK.COM</a></div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Menu hamburguesa
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.querySelector('i').classList.add('fa-bars');
+                hamburger.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        // Formulario de chips
+        const chips = document.querySelectorAll('.chip');
+        const mock = document.getElementById('mock');
+        chips.forEach(c => {
+            c.addEventListener('click', () => {
+                chips.forEach(x => x.classList.remove('active'));
+                c.classList.add('active');
+                mock.textContent = c.dataset.mood.toUpperCase();
+            });
+        });
+
+        // Scroll suave CTA
+        document.getElementById('ctaComprar').addEventListener('click', e => {
+            e.preventDefault();
+            document.getElementById('cta-section').scrollIntoView({behavior:'smooth'});
+        });
+    </script>
+</body>
+</html>
